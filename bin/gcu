@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'gem_check_updates'
-
-GemCheckUpdates::Runner.run

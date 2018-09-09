@@ -51,6 +51,7 @@ module GemCheckUpdates
 
       show_version_diff
       remove_backup
+      
     rescue StandardError => e
       puts e.message
       puts "Updating #{@file} failed. To rescue original #{@file}, see #{file_backup}"
