@@ -1,8 +1,6 @@
 require 'bundler'
-require 'pp'
 require 'fileutils'
 require 'gem_update_checker'
-require 'virtus'
 require 'optparse'
 
 require 'gem_check_updates/version'

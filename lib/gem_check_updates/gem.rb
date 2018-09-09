@@ -1,15 +1,17 @@
 module GemCheckUpdates
   class Gem
-  include Virtus.model
+    attr_accessor :name, :latest_version, :current_version, :update_available, :version_range
 
-  attribute :name, String
-  attribute :latest_version, String
-  attribute :current_version, String
-  attribute :update_available, Boolean
-  attribute :version_range, String
+    def initialize(name: nil, latest_version: nil, current_version: nil, update_available: false, version_range: nil)
+      @name = name
+      @latest_version = latest_version
+      @current_version = current_version
+      @update_available = update_available
+      @version_range = version_range
+    end
 
-  def update_exists?
-    self.update_available && current_version != '0'
+    def update_exists?
+      @update_available && @current_version != '0'
+    end
   end
-end
 end

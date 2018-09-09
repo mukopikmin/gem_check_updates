@@ -1,16 +1,16 @@
 module GemCheckUpdates
   class Gemfile
-    def initialize(file='./Gemfile')
+    def initialize(file)
       @file = file
       @gems = self.class.parse(file)
     end
 
     def file_backup
-      "#{file}.backup"
+      "#{@file}.backup"
     end
 
     def backup
-      FileUtils.cp(file, file_backup)
+      FileUtils.cp(@file, file_backup)
     end
 
     def remove_backup
@@ -35,11 +35,11 @@ module GemCheckUpdates
       backup
 
       File.open(file_backup) do |current|
-        File.open(file, 'w') do |updated|
+        File.open(@file, 'w') do |updated|
           current.each_line do |line|
             if matcher = line.match(/gem ['"](.+?)['"]\s*,\s*['"][>=|~>]*\s+(.+?)['"]/)
               _, name, old_version = *matcher
-              target = gems.find { |gem| gem.name == name }
+              target = @gems.find { |gem| gem.name == name }
 
               line.gsub!(old_version, target.latest_version) unless target.nil?
             end
@@ -51,8 +51,9 @@ module GemCheckUpdates
 
       show_version_diff
       remove_backup
-    rescue StandardError
-      puts "Updating #{file} failed. To rescue original #{file}, see #{file_backup}"
+    rescue StandardError => e
+      puts e.message
+      puts "Updating #{@file} failed. To rescue original #{@file}, see #{file_backup}"
     end
 
     def show_version_diff
@@ -62,5 +63,5 @@ module GemCheckUpdates
         end
       end
     end
-end
+  end
 end
