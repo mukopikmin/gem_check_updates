@@ -1,14 +1,6 @@
 require 'spec_helper'
 
 RSpec.describe GemCheckUpdates::Runner do
-  describe '.run' do
-    before do
-
-    end
-
-
-  end
-
   describe '.parse_options' do
     context 'single option' do
       let(:argv) { ['-f','Gemfile'] }

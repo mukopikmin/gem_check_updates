@@ -2,11 +2,12 @@ require 'spec_helper'
 
 RSpec.describe GemCheckUpdates::Gemfile do
   describe '.parse' do
-
-
     context 'with parsable Gemfile' do
-      let(:file) {'spec/fixtures/Gemfile-ok'}
-      let(:gems) {GemCheckUpdates::Gemfile.parse(file)}
+      let(:file) { 'spec/fixtures/Gemfile-ok' }
+      let(:gems) { GemCheckUpdates::Gemfile.parse(file) }
+      let(:response) { { version: '1.0' }.to_json }
+
+      before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
 
       it 'returns parsed gems' do
         expect(gems).to be_a(Array)
@@ -14,7 +15,11 @@ RSpec.describe GemCheckUpdates::Gemfile do
     end
 
     context 'with unparsable Gemfile' do
+      let(:file) { 'spec/fixtures/Gemfile-fail' }
 
+      it 'returns parsed gems' do
+        expect { GemCheckUpdates::Gemfile.parse(file) }.to raise_error(Bundler::Dsl::DSLError)
+      end
     end
   end
 end

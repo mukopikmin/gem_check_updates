@@ -1,5 +1,6 @@
 require "bundler/setup"
 require "gem_check_updates"
+require 'webmock/rspec'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
