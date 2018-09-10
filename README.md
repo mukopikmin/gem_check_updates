@@ -1,28 +1,21 @@
-# GemCheckUpdates
+# Gem Check Updates
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/gem_check_updates`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Update the version of gems in Gemfile.
+This gem is inspired by [tjunnone/npm-check-updates](https://github.com/tjunnone/npm-check-updates).
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'gem_check_updates'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
 
     $ gem install gem_check_updates
 
 ## Usage
 
-TODO: Write usage instructions here
+See references with option `-h` or `--help`.
+
+    $ gem-check-updates
+
+Also you can run command as follows.
+
+    $ gcu
 
 ## Development
 
@@ -32,4 +25,4 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/gem_check_updates.
+Bug reports and pull requests are welcome on GitHub at https://github.com/mukopikmin/gem_check_updates.
