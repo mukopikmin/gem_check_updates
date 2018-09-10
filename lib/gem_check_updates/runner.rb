@@ -2,13 +2,13 @@ module GemCheckUpdates
   class Runner
     def self.run(argv)
       options = parse_options(argv)
-        gemfile = Gemfile.new(options[:file])
+      gemfile = Gemfile.new(options[:file])
 
-        if options[:apply]
-          gemfile.update
-        else
-          gemfile.show_version_diff
-        end
+      if options[:apply]
+        gemfile.update
+      else
+        gemfile.show_version_diff
+      end
     end
 
     def self.parse_options(argv)
@@ -16,9 +16,9 @@ module GemCheckUpdates
       options = {
         file: './Gemfile',
         apply: false,
-        major: false,
-        minor: false,
-        patch: false,
+        # major: false,
+        # minor: false,
+        # patch: false
       }
 
       OptionParser.new do |opt|

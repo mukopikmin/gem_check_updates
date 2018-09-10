@@ -13,6 +13,11 @@ module GemCheckUpdates
       FileUtils.cp(@file, file_backup)
     end
 
+    def restore
+      FileUtils.mv(file_backup, @file)
+      remove_backup
+    end
+
     def remove_backup
       FileUtils.rm(file_backup)
     end
@@ -21,12 +26,9 @@ module GemCheckUpdates
       Bundler::Definition.build(file, nil, nil).dependencies.map do |gem|
         name = gem.name
         version_range, version = gem.requirements_list.first.split(' ')
-        checker = GemUpdateChecker::Client.new(name, version)
 
         Gem.new(name: name,
-                latest_version: checker.latest_version,
                 current_version: version,
-                update_available: checker.update_available,
                 version_range: version_range)
       end
     end
@@ -51,15 +53,14 @@ module GemCheckUpdates
 
       show_version_diff
       remove_backup
-      
     rescue StandardError => e
+      restore
       puts e.message
-      puts "Updating #{@file} failed. To rescue original #{@file}, see #{file_backup}"
     end
 
     def show_version_diff
       @gems.each do |gem|
-        if gem.update_exists?
+        if gem.update_available
           puts "#{gem.name} \"#{gem.version_range} #{gem.current_version}\" -> \"#{gem.version_range} #{gem.latest_version}\""
         end
       end

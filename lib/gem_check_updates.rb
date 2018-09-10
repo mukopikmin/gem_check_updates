@@ -1,7 +1,8 @@
 require 'bundler'
 require 'fileutils'
-require 'gem_update_checker'
 require 'optparse'
+require 'rest-client'
+require 'json'
 
 require 'gem_check_updates/version'
 require 'gem_check_updates/message'
