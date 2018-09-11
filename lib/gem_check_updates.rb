@@ -2,6 +2,7 @@ require 'bundler'
 require 'fileutils'
 require 'optparse'
 require 'rest-client'
+require 'colored'
 require 'json'
 
 require 'gem_check_updates/version'

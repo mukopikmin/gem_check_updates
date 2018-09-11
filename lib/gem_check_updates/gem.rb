@@ -5,7 +5,6 @@ module GemCheckUpdates
     attr_reader :name,
                 :latest_version,
                 :current_version,
-                :update_available,
                 :version_range
 
     def initialize(name: nil, current_version: nil, version_range: nil)
@@ -16,15 +15,19 @@ module GemCheckUpdates
       check_update!
     end
 
+    def update_available?
+      !@latest_version.nil? && @current_version != '0' && @latest_version > @current_version
+    end
+
     def check_update!
       response = RestClient.get("#{RUBYGEMS_API}/#{name}/latest.json")
       version = JSON.parse(response.body)['version']
 
-      @update_available = version > current_version
       @latest_version = version
-    rescue StandardError
-      @update_available = false
+    rescue
       @latest_version = nil
+
+      puts "Failed to check version \"#{@name}\".".red
     end
   end
 end

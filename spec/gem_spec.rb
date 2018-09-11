@@ -10,9 +10,8 @@ RSpec.describe GemCheckUpdates::Gem do
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
       before(:each) {gem.check_update!}
 
-      it 'sets latest_version and update_available' do
+      it 'sets latest_version' do
         expect(gem.latest_version).to eq(version)
-        expect(gem.update_available).to be_truthy
       end
     end
 
@@ -28,9 +27,8 @@ RSpec.describe GemCheckUpdates::Gem do
       before(:each) { stub_request(:get, /rubygems.org/).to_return(status: 404, body: response) }
       before(:each) {gem.check_update!}
 
-      it 'sets failed values to latest_version and update_available' do
+      it 'sets failed values to latest_version' do
         expect(gem.latest_version).to be_nil
-        expect(gem.update_available).to be_falsey
       end
     end
   end
