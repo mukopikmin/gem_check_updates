@@ -24,7 +24,7 @@ module GemCheckUpdates
       version = JSON.parse(response.body)['version']
 
       @latest_version = version
-    rescue
+    rescue StandardError
       @latest_version = nil
 
       puts "Failed to check version \"#{@name}\".".red

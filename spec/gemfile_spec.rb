@@ -4,7 +4,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   describe '#parse' do
     context 'with parsable Gemfile' do
       let(:file) { 'spec/fixtures/Gemfile-ok' }
-      let(:gemfile) {GemCheckUpdates::Gemfile.new(file)}
+      let(:gemfile) { GemCheckUpdates::Gemfile.new(file) }
       let(:response) { { version: '1.0' }.to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }

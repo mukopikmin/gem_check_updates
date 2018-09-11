@@ -12,7 +12,6 @@ module GemCheckUpdates
     end
 
     def self.parse_options(argv)
-      op = OptionParser.new
       options = {
         file: './Gemfile',
         apply: false,
@@ -22,6 +21,8 @@ module GemCheckUpdates
       }
 
       OptionParser.new do |opt|
+        opt.version = GemCheckUpdates::VERSION
+        
         opt.on('-f Gemfile', '--file', "Path to Gemfile (default: #{options[:file]})") { |v| options[:file] = v }
         opt.on('-a', '--apply', "Apply updates (default: #{options[:apply]})") { |v| options[:apply] = v }
 

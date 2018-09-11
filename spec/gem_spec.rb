@@ -4,11 +4,11 @@ RSpec.describe GemCheckUpdates::Gem do
   describe '#check_update!' do
     context 'with success version check' do
       let(:gem) { GemCheckUpdates::Gem.new(name: 'example', current_version: '0.1', version_range: '~>') }
-      let(:version) {'1.0'}
+      let(:version) { '1.0' }
       let(:response) { { version: version }.to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
-      before(:each) {gem.check_update!}
+      before(:each) { gem.check_update! }
 
       it 'sets latest_version' do
         expect(gem.latest_version).to eq(version)
@@ -17,15 +17,15 @@ RSpec.describe GemCheckUpdates::Gem do
 
     context 'with failed version check' do
       let(:gem) { GemCheckUpdates::Gem.new(name: 'example', current_version: '0.1', version_range: '~>') }
-      let(:response) {
+      let(:response) do
         {
           status: 404,
-          error: "Not Found"
+          error: 'Not Found'
         }.to_json
-      }
+      end
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(status: 404, body: response) }
-      before(:each) {gem.check_update!}
+      before(:each) { gem.check_update! }
 
       it 'sets failed values to latest_version' do
         expect(gem.latest_version).to be_nil

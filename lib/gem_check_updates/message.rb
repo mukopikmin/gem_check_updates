@@ -1,6 +1,6 @@
 module GemCheckUpdates
   module Message
-    USAGE = <<-USAGE
+    USAGE = <<-USAGE.freeze
       Gem Check Updates
 
       Usage: gem-check-updates [path/to/Gemfile]

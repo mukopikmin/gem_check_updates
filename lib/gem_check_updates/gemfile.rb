@@ -34,7 +34,6 @@ module GemCheckUpdates
         Gem.new(name: name,
                 current_version: version,
                 version_range: version_range)
-        
       end
 
       puts
