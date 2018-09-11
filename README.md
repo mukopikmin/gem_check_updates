@@ -1,6 +1,8 @@
 # Gem Check Updates
 
 [![Build Status](https://travis-ci.org/mukopikmin/gem_check_updates.svg?branch=master)](https://travis-ci.org/mukopikmin/gem_check_updates)
+[![Maintainability](https://api.codeclimate.com/v1/badges/45a740c1633d4de67e70/maintainability)](https://codeclimate.com/github/mukopikmin/gem_check_updates/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/45a740c1633d4de67e70/test_coverage)](https://codeclimate.com/github/mukopikmin/gem_check_updates/test_coverage)
 
 Update the version of gems in Gemfile.
 This gem is inspired by [tjunnone/npm-check-updates](https://github.com/tjunnone/npm-check-updates).
