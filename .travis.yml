@@ -13,3 +13,8 @@ deploy:
     branch: master
     tags: true
     repo: mukopikmin/gem_check_updates
+addons:
+  code_climate:
+    repo_token: bd103456b9581249a1b35fcee59e86b542bdd3babdd6e85181a1faefcd01d23f
+after_success:
+- bundle exec codeclimate-test-reporter

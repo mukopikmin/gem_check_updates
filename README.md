@@ -1,5 +1,7 @@
 # Gem Check Updates
 
+[![Build Status](https://travis-ci.org/mukopikmin/gem_check_updates.svg?branch=master)](https://travis-ci.org/mukopikmin/gem_check_updates)
+
 Update the version of gems in Gemfile.
 This gem is inspired by [tjunnone/npm-check-updates](https://github.com/tjunnone/npm-check-updates).
 

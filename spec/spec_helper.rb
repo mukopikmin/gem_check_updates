@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start 'rails'
+
 require 'bundler/setup'
 require 'gem_check_updates'
 require 'webmock/rspec'
