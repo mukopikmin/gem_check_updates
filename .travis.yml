@@ -1,7 +1,14 @@
----
 sudo: false
 language: ruby
 cache: bundler
 rvm:
-  - 2.5.1
+- 2.5.1
 before_install: gem install bundler -v 1.16.3
+deploy:
+  provider: rubygems
+  gem: gem_check_updates
+  api_key:
+    secure: BTA206fiplnX2sTc6RaLpEITwYhUoOX+PsyauT8AGlLwg1zpv0NaUfrrl3acVGijuCGfq7kzUqxGtGMYJQLlp7EAApx7XeJvDNZ4F4cc+i5QMBz1kWSPuq/4tuq6RQXvbglNGDK9OOu54kfseNQmeWc30krBtxeC7OYuD47Gy6+ptFMSpiYbr0+S1XoWH4zjMhVXHMPpDDiZMicpriXTdFUKn+0QU0bHHR0+90gUUBMDkjDkPguAbQfnRxkJgxhUgmPqGcnRDYjPQXZGzUrDIdBEVE+9f3sNGvDcRSdUcP3SC3GtmA3n3JNNDD8YurdNBmMM4Z/cJ9jjY8j5zr0mKoNCBGzJzyM82SkVz5j6PFxN0KcZijVC+wq9ErJHGbqQM2ARbpmQEGls/7hI4D5oTR20+HycrGnbzbuc7LbDNmKXFqZWM3a2XqMvPP9Ze4sphf1wdKqCctcvwtOkqO4JfP9fET0YwVbZ6/nytbUksXSZLrCHIELwEILgrWNv72wfUdpxOMKv6VetVlUfM4VkA5uYbL1F5D0DFfRxrBiA1mUSrooufv9X3zTKQCr8bBPIu13wnau2JqUTv0d6TI79rs/NacyoVx0mpvqNiQBTxLS+EB2xTUsQ7KuULezqtYE9w8ZBsnaCBkv8oJTpA5Bs/c/+OPfeuPsxYCh20FTzBsk=
+  on:
+    branch: master
+    tags: true
