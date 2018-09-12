@@ -6,11 +6,11 @@ Gem::Specification.new do |spec|
   spec.name          = 'gem_check_updates'
   spec.version       = GemCheckUpdates::VERSION
   spec.authors       = ['Yusuke Mukai']
-  spec.email         = ['opposite0302@gmail.com']
+  spec.email         = ['mukopikmin@gmail.com']
 
   spec.summary       = 'Auto update Gemfile'
   spec.description   = 'Automatically update gems written in Gemfile'
-  spec.homepage      = 'https://github.com/mukopikmin/gem-check-updates'
+  spec.homepage      = 'https://github.com/mukopikmin/gem_check_updates'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

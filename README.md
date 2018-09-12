@@ -1,5 +1,6 @@
 # Gem Check Updates
 
+[![Gem Version](https://badge.fury.io/rb/gem_check_updates.svg)](https://badge.fury.io/rb/gem_check_updates)
 [![Build Status](https://travis-ci.org/mukopikmin/gem_check_updates.svg?branch=master)](https://travis-ci.org/mukopikmin/gem_check_updates)
 [![Maintainability](https://api.codeclimate.com/v1/badges/45a740c1633d4de67e70/maintainability)](https://codeclimate.com/github/mukopikmin/gem_check_updates/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/45a740c1633d4de67e70/test_coverage)](https://codeclimate.com/github/mukopikmin/gem_check_updates/test_coverage)
