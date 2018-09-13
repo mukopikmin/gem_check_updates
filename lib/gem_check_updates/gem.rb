@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module GemCheckUpdates
-  RUBYGEMS_API = 'https://rubygems.org/api/v1/versions'.freeze
+  RUBYGEMS_API = 'https://rubygems.org/api/v1/versions'
 
   class Gem
     attr_reader :name,
@@ -24,6 +26,8 @@ module GemCheckUpdates
       version = JSON.parse(response.body)['version']
 
       @latest_version = version
+
+      self
     rescue StandardError
       @latest_version = nil
 

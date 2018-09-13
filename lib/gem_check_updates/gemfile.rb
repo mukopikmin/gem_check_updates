@@ -1,27 +1,25 @@
+# frozen_string_literal: true
+
 module GemCheckUpdates
   class Gemfile
-    attr_reader :gems
+    attr_reader :file, :file_backup, :gems
 
     def initialize(file)
       @file = file
+      @file_backup = "#{@file}.backup"
       @gems = parse
     end
 
-    def file_backup
-      "#{@file}.backup"
-    end
-
     def backup
-      FileUtils.cp(@file, file_backup)
+      FileUtils.cp(@file, @file_backup)
     end
 
     def restore
-      FileUtils.mv(file_backup, @file)
-      remove_backup
+      FileUtils.mv(@file_backup, @file)
     end
 
     def remove_backup
-      FileUtils.rm(file_backup)
+      FileUtils.rm(@file_backup)
     end
 
     def parse
@@ -36,16 +34,13 @@ module GemCheckUpdates
                 version_range: version_range)
       end
 
-      puts
-      puts
+      print "\n\n"
 
       gems
     end
 
     def update
-      backup
-
-      File.open(file_backup) do |current|
+      File.open(@file_backup) do |current|
         File.open(@file, 'w') do |updated|
           current.each_line do |line|
             if matcher = line.match(/gem ['"](.+?)['"]\s*,\s*['"][>=|~>]*\s+(.+?)['"]/)
@@ -59,28 +54,6 @@ module GemCheckUpdates
           end
         end
       end
-
-      show_version_diff
-      remove_backup
-    rescue StandardError => e
-      restore
-      puts e.message.red
-    end
-
-    def show_version_diff
-      puts 'Following gems can be updated.'
-      puts 'If you want to apply these updates, run command with option \'-a\'.'
-      puts ' (Caution: This option will overwrite your Gemfile)'.red
-      puts
-
-      @gems.each do |gem|
-        if gem.update_available?
-          puts "    #{gem.name} \"#{gem.version_range} #{gem.current_version}\" → \"#{gem.version_range} #{gem.latest_version.green}\""
-        end
-      end
-
-      puts
-      puts
     end
   end
 end

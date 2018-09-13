@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GemCheckUpdates
   class Runner
     def self.run(argv)
@@ -5,9 +7,19 @@ module GemCheckUpdates
       gemfile = Gemfile.new(options[:file])
 
       if options[:apply]
-        gemfile.update
+        begin
+          gemfile.backup
+          gemfile.update
+          gemfile.remove_backup
+
+          print GemCheckUpdates::Message.update_completed(gemfile)
+        rescue StandardError => e
+          gemfile.restore
+
+          print e.message.red
+        end
       else
-        gemfile.show_version_diff
+        print GemCheckUpdates::Message.updatable_gems(gemfile)
       end
     end
 
@@ -15,9 +27,7 @@ module GemCheckUpdates
       options = {
         file: './Gemfile',
         apply: false,
-        # major: false,
-        # minor: false,
-        # patch: false
+        # keep_backup: false
       }
 
       OptionParser.new do |opt|
