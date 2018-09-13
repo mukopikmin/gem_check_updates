@@ -40,18 +40,23 @@ module GemCheckUpdates
     end
 
     def update
-      File.open(@file_backup) do |current|
-        File.open(@file, 'w') do |updated|
-          current.each_line do |line|
-            if matcher = line.match(/gem ['"](.+?)['"]\s*,\s*['"][>=|~>]*\s+(.+?)['"]/)
-              _, name, old_version = *matcher
-              target = @gems.find { |gem| gem.name == name }
+      gemfile_lines = []
+      File.open(@file) do |current|
+        current.each_line do |line|
+          gemfile_lines << line
+        end
+      end
 
-              line.gsub!(old_version, target.latest_version) unless target.nil?
-            end
+      File.open(@file, 'w') do |updated|
+        gemfile_lines.each do |line|
+          if matcher = line.match(/gem ['"](.+?)['"]\s*,\s*['"][>=|~>]*\s+(.+?)['"]/)
+            _, name, old_version = *matcher
+            target = @gems.find { |gem| gem.name == name }
 
-            updated.puts(line)
+            line.gsub!(old_version, target.latest_version) unless target.nil?
           end
+
+          updated.puts(line)
         end
       end
     end
