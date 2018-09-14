@@ -10,18 +10,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Yusuke Mukai']
   spec.email         = ['mukopikmin@gmail.com']
 
-  spec.summary       = 'Auto update Gemfile'
-  spec.description   = 'Automatically update gems written in Gemfile'
+  spec.summary       = 'Automatically update Gemfile'
+  spec.description   = 'Automatically update and overwrite version of gems in Gemfile'
   spec.homepage      = 'https://github.com/mukopikmin/gem_check_updates'
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise 'RubyGems 2.0 or newer is required to protect against ' \
-      'public gem pushes.'
-  end
+  s.licenses         = ['MIT']
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
