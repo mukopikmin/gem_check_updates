@@ -4,8 +4,8 @@ require 'spec_helper'
 
 RSpec.describe GemCheckUpdates::Message do
   let(:file) { 'spec/fixtures/Gemfile-ok' }
-  let(:gemfile) { GemCheckUpdates::Gemfile.new(file) }
-  let(:response) { { version: '1.0' }.to_json }
+  let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
+  let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
 
   describe '.updatable_gems' do
     let(:message) { GemCheckUpdates::Message.updatable_gems(gemfile) }

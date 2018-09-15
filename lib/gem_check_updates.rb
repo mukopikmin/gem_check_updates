@@ -8,6 +8,7 @@ require 'colored'
 require 'json'
 
 require 'gem_check_updates/version'
+require 'gem_check_updates/version_scope'
 require 'gem_check_updates/message'
 require 'gem_check_updates/gemfile'
 require 'gem_check_updates/gem'

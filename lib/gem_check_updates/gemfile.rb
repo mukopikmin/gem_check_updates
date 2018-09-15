@@ -4,10 +4,10 @@ module GemCheckUpdates
   class Gemfile
     attr_reader :file, :file_backup, :gems
 
-    def initialize(file)
+    def initialize(file, update_scope)
       @file = file
       @file_backup = "#{@file}.backup"
-      @gems = parse
+      @gems = parse(update_scope)
     end
 
     def backup
@@ -22,7 +22,7 @@ module GemCheckUpdates
       FileUtils.rm(@file_backup)
     end
 
-    def parse
+    def parse(update_scope)
       gems = Bundler::Definition.build(@file, nil, nil).dependencies.map do |gem|
         print '.'
 
@@ -31,7 +31,8 @@ module GemCheckUpdates
 
         Gem.new(name: name,
                 current_version: version,
-                version_range: version_range)
+                version_range: version_range,
+                update_scope: update_scope)
       end
 
       print "\n\n"

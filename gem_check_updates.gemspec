@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.summary       = 'Automatically update Gemfile'
   spec.description   = 'Automatically update and overwrite version of gems in Gemfile'
   spec.homepage      = 'https://github.com/mukopikmin/gem_check_updates'
-  s.licenses         = ['MIT']
+  spec.licenses      = ['MIT']
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
