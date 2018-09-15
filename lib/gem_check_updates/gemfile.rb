@@ -24,7 +24,7 @@ module GemCheckUpdates
 
     def parse(update_scope)
       gems = Bundler::Definition.build(@file, nil, nil).dependencies.map do |gem|
-        print '.'
+        GemCheckUpdates::Message.out('.')
 
         name = gem.name
         version_range, version = gem.requirements_list.first.split(' ')
@@ -35,7 +35,7 @@ module GemCheckUpdates
                 update_scope: update_scope)
       end
 
-      print "\n\n"
+      GemCheckUpdates::Message.out("\n\n")
 
       gems
     end

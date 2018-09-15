@@ -12,14 +12,14 @@ module GemCheckUpdates
           gemfile.update
           gemfile.remove_backup
 
-          print GemCheckUpdates::Message.update_completed(gemfile)
+          GemCheckUpdates::Message.update_completed(gemfile)
         rescue StandardError => e
           gemfile.restore
 
           print e.message.red
         end
       else
-        print GemCheckUpdates::Message.updatable_gems(gemfile)
+        GemCheckUpdates::Message.updatable_gems(gemfile)
       end
     end
 
@@ -30,7 +30,8 @@ module GemCheckUpdates
         major: true,
         minor: true,
         patch: true
-        # keep_backup: false
+        # keep_backup: false,
+        # verbose: false
       }
 
       OptionParser.new do |opt|

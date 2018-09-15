@@ -37,7 +37,7 @@ module GemCheckUpdates
     rescue StandardError => e
       @latest_version = nil
 
-      puts "Failed to check version \"#{@name}\".".red
+      GemCheckUpdates::Message.out("Failed to check version \"#{@name}\".".red)
     end
 
     def scoped_latest_version(versions, scope)
