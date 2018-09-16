@@ -8,9 +8,11 @@ module GemCheckUpdates
       print str
     end
 
-    def self.updatable_gems(gemfile)
+    def self.updatable_gems(gemfile, scope)
       out <<~VERSIONS
-        Following gems can be updated.
+        Checking #{scope.green} updates are completed.
+
+        You can update following newer gems.
         If you want to apply these updates, run command with option \'-a\'.
         #{'(Caution: This option will overwrite your Gemfile)'.red}
 
@@ -20,8 +22,10 @@ module GemCheckUpdates
       VERSIONS
     end
 
-    def self.update_completed(gemfile)
+    def self.update_completed(gemfile, scope)
       out <<~VERSIONS
+        Checking #{scope.green} updates are completed.
+
         Following gems have been updated!
 
         #{gems_version_diff(gemfile)}
@@ -31,7 +35,9 @@ module GemCheckUpdates
     end
 
     def self.gems_version_diff(gemfile)
-      gemfile.gems.map { |gem| "    #{gem.name} \"#{gem.version_range} #{gem.current_version}\" → \"#{gem.version_range} #{gem.latest_version.green}\"" }.join("\n")
+      gemfile.gems
+             .select(&:update_available?)
+             .map { |gem| "    #{gem.name} \"#{gem.version_range} #{gem.current_version}\" → \"#{gem.version_range} #{gem.latest_version.green}\"" }.join("\n")
     end
   end
 end

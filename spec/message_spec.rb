@@ -4,7 +4,8 @@ require 'spec_helper'
 
 RSpec.describe GemCheckUpdates::Message do
   let(:file) { 'spec/fixtures/gemfile/success' }
-  let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
+  let(:scope) { GemCheckUpdates::VersionScope::MAJOR }
+  let(:gemfile) { GemCheckUpdates::Gemfile.new(file, scope) }
   let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
 
   describe '.out' do
@@ -19,7 +20,7 @@ RSpec.describe GemCheckUpdates::Message do
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
 
     it 'output message about updatable gems' do
-      expect { GemCheckUpdates::Message.updatable_gems(gemfile) }.not_to raise_error
+      expect { GemCheckUpdates::Message.updatable_gems(gemfile, scope) }.not_to raise_error
     end
   end
 
@@ -27,7 +28,7 @@ RSpec.describe GemCheckUpdates::Message do
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
 
     it 'output message about updatable gems' do
-      expect { GemCheckUpdates::Message.update_completed(gemfile) }.not_to raise_error
+      expect { GemCheckUpdates::Message.update_completed(gemfile, scope) }.not_to raise_error
     end
   end
 end

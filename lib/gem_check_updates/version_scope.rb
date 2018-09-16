@@ -2,8 +2,8 @@
 
 module GemCheckUpdates
   module VersionScope
-    MAJOR = 0
-    MINOR = 1
-    PATCH = 2
+    MAJOR = 'major'
+    MINOR = 'minor'
+    PATCH = 'patch'
   end
 end
