@@ -6,7 +6,7 @@ RSpec.describe GemCheckUpdates::Message do
   let(:file) { 'spec/fixtures/gemfile/success' }
   let(:scope) { GemCheckUpdates::VersionScope::MAJOR }
   let(:gemfile) { GemCheckUpdates::Gemfile.new(file, scope) }
-  let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+  let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
   describe '.out' do
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }

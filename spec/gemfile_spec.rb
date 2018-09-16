@@ -6,7 +6,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   describe '#backup' do
     let(:file) { 'spec/fixtures/gemfile/success' }
     let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
-    let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+    let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
     before(:each) { gemfile.backup }
@@ -20,7 +20,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   describe '#restore' do
     let(:file) { 'spec/fixtures/gemfile/success' }
     let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
-    let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+    let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
     before(:each) { gemfile.backup }
@@ -34,7 +34,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   describe '#remove_backup' do
     let(:file) { 'spec/fixtures/gemfile/success' }
     let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
-    let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+    let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
     before(:each) { gemfile.backup }
@@ -49,7 +49,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
     context 'with parsable Gemfile' do
       let(:file) { 'spec/fixtures/gemfile/success' }
       let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
-      let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+      let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
 
@@ -71,7 +71,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   describe '#update' do
     let(:file) { 'spec/fixtures/gemfile/success' }
     let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
-    let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+    let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
     let(:updated_gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
     let(:updatable_gems) { updated_gemfile.gems.select(&:update_available?) }
 

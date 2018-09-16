@@ -50,7 +50,9 @@ module GemCheckUpdates
 
       File.open(@file, 'w') do |updated|
         gemfile_lines.each do |line|
-          if matcher = line.match(/gem ['"](.+?)['"]\s*,\s*['"][>=|~>]*\s+(.+?)['"]/)
+          matcher = line.match(/gem ['"](.+?)['"]\s*,\s*['"][>=|~>]*\s+(.+?)['"]/)
+
+          if matcher
             _, name, old_version = *matcher
             target = @gems.find { |gem| gem.name == name }
 

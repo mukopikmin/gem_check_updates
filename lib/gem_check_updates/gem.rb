@@ -38,6 +38,8 @@ module GemCheckUpdates
       @latest_version = nil
 
       GemCheckUpdates::Message.out("Failed to check version \"#{@name}\".".red)
+      GemCheckUpdates::Message.out("\n\n")
+      GemCheckUpdates::Message.out(e.message.red)
     end
 
     def scoped_latest_version(versions, scope)

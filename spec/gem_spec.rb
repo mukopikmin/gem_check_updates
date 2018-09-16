@@ -6,7 +6,7 @@ RSpec.describe GemCheckUpdates::Gem do
   describe '#update_available?' do
     context 'with available updates' do
       let(:gem) { GemCheckUpdates::Gem.new(name: 'test', current_version: '0.0.1') }
-      let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+      let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
 
@@ -28,7 +28,7 @@ RSpec.describe GemCheckUpdates::Gem do
 
     context 'with gem without version specification' do
       let(:gem) { GemCheckUpdates::Gem.new(name: 'test') }
-      let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+      let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
 
@@ -39,7 +39,7 @@ RSpec.describe GemCheckUpdates::Gem do
 
     context 'with no update' do
       let(:gem) { GemCheckUpdates::Gem.new(name: 'test', current_version: '1.0.0') }
-      let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+      let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
 
@@ -53,7 +53,7 @@ RSpec.describe GemCheckUpdates::Gem do
     context 'with success version check' do
       let(:gem) { GemCheckUpdates::Gem.new(name: 'example', current_version: '0.0.1', version_range: '~>') }
       let(:version) { '1.0.0' }
-      let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
+      let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
       before(:each) { gem.check_update!(GemCheckUpdates::VersionScope::MAJOR) }
@@ -83,7 +83,7 @@ RSpec.describe GemCheckUpdates::Gem do
 
   describe '#scoped_latest_version' do
     let(:gem) { GemCheckUpdates::Gem.new(name: 'example', current_version: '0.0.1', version_range: '~>') }
-    let(:versions) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')) }
+    let(:versions) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')) }
 
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: versions.to_json) }
 

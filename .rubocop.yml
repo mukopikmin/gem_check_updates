@@ -8,4 +8,8 @@ MethodLength:
   Enabled: false
 BlockLength:
   Enabled: false
+Metrics/AbcSize:
+  Max: 30
+Style/Documentation:
+  Enabled: no
   
