@@ -63,11 +63,9 @@ module GemCheckUpdates
     end
 
     def self.update_scope(options)
-      if options[:major]
-        GemCheckUpdates::VersionScope::MAJOR
-      elsif options[:minor]
+      if !options[:major] && options[:minor]
         GemCheckUpdates::VersionScope::MINOR
-      elsif options[:patch]
+      elsif !options[:major] && !options[:minor] && options[:patch]
         GemCheckUpdates::VersionScope::PATCH
       else
         GemCheckUpdates::VersionScope::MAJOR
