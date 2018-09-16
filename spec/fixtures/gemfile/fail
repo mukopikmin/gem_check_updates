@@ -1,0 +1,37 @@
+source 'https://rubygems.org'
+
+ruby '2.5.1'
+
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  "https://github.com/#{repo_name}.git"
+end
+
+gem 'rails', '~> 5.1.4'
+gem 'puma', '~> 3.10'
+gem 'versionist', '~> 1.7.0'
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+group :development do
+  gem 'listen', 'this message will cause error', '~> 3.1.5'
+  gem 'spring'
+  gem 'spring-watcher-listen', '~> 2.0.0'
+end
+
+group :development, :test do
+  gem 'byebug', '~> 10.0.0', platform: :mri
+  gem 'sqlite3'
+  gem 'rspec-rails', '~> 3.7.2'
+end
+
+group :test do
+  gem 'rails-controller-testing', '~> 1.0.1'
+  gem 'codeclimate-test-reporter', '~> 1.0.8', require: false
+  gem 'brakeman', '~> 4.2.0', require: false
+end
+
+group :production do
+  gem 'pg', '~> 1.0.0'
+  gem 'rails_12factor', '~> 0.0.3'
+  gem 'newrelic_rpm', '~> 5.3.0.346'
+end

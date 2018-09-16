@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 RSpec.describe GemCheckUpdates::Message do
-  let(:file) { 'spec/fixtures/Gemfile-ok' }
+  let(:file) { 'spec/fixtures/gemfile/success' }
   let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
   let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
 

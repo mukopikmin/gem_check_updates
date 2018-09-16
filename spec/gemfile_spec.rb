@@ -4,7 +4,7 @@ require 'spec_helper'
 
 RSpec.describe GemCheckUpdates::Gemfile do
   describe '#backup' do
-    let(:file) { 'spec/fixtures/Gemfile-ok' }
+    let(:file) { 'spec/fixtures/gemfile/success' }
     let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
     let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
 
@@ -18,7 +18,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   end
 
   describe '#restore' do
-    let(:file) { 'spec/fixtures/Gemfile-ok' }
+    let(:file) { 'spec/fixtures/gemfile/success' }
     let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
     let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
 
@@ -32,7 +32,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   end
 
   describe '#remove_backup' do
-    let(:file) { 'spec/fixtures/Gemfile-ok' }
+    let(:file) { 'spec/fixtures/gemfile/success' }
     let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
     let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
 
@@ -47,7 +47,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
 
   describe '#parse' do
     context 'with parsable Gemfile' do
-      let(:file) { 'spec/fixtures/Gemfile-ok' }
+      let(:file) { 'spec/fixtures/gemfile/success' }
       let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
       let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
 
@@ -60,7 +60,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
     end
 
     context 'with unparsable Gemfile' do
-      let(:file) { 'spec/fixtures/Gemfile-fail' }
+      let(:file) { 'spec/fixtures/gemfile/fail' }
 
       it 'returns parsed gems' do
         expect { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }.to raise_error(Bundler::Dsl::DSLError)
@@ -69,7 +69,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   end
 
   describe '#update' do
-    let(:file) { 'spec/fixtures/Gemfile-ok' }
+    let(:file) { 'spec/fixtures/gemfile/success' }
     let(:gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
     let(:response) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')).to_json }
     let(:updated_gemfile) { GemCheckUpdates::Gemfile.new(file, GemCheckUpdates::VersionScope::MAJOR) }
