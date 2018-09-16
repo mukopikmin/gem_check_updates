@@ -42,14 +42,18 @@ module GemCheckUpdates
 
     def scoped_latest_version(versions, scope)
       numbers = versions.map { |v| v['number'] }
+      current_major, current_minor = @current_version.split('.')
 
       case scope
-      when GemCheckUpdates::VersionScope::MAJOR
-        numbers.max
-      when GemCheckUpdates::VersionScope::MINOR, GemCheckUpdates::VersionScope::PATCH
-        current = @current_version.split('.')[scope - 1]
-        numbers.select { |n| n.split('.')[scope - 1] == current }.max
+      when GemCheckUpdates::VersionScope::MINOR
+        numbers.select { |n| n.split('.').first == current_major }.max
+      when GemCheckUpdates::VersionScope::PATCH
+        numbers.select do |n|
+          major, minor = n.split('.')
+          major == current_major && minor == current_minor
+        end.max
       else
+        # This branch is equal to specifying major updates
         numbers.max
       end
     end

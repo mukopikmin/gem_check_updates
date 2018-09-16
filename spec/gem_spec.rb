@@ -82,13 +82,14 @@ RSpec.describe GemCheckUpdates::Gem do
   end
 
   describe '#scoped_latest_version' do
+    let(:gem) { GemCheckUpdates::Gem.new(name: 'example', current_version: '0.0.1', version_range: '~>') }
+    let(:versions) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')) }
+
+    before(:each) { stub_request(:get, /rubygems.org/).to_return(body: versions.to_json) }
+
     context 'on major update' do
-      let(:gem) { GemCheckUpdates::Gem.new(name: 'example', current_version: '0.0.1', version_range: '~>') }
-      let(:versions) { JSON.load(File.open('spec/fixtures/rubygems.org/versions.json')) }
       let(:scope) { GemCheckUpdates::VersionScope::MAJOR }
       let(:latest_version) { gem.scoped_latest_version(versions, scope) }
-
-      before(:each) { stub_request(:get, /rubygems.org/).to_return(body: versions.to_json) }
 
       it 'updates major version' do
         expect(latest_version).to eq('1.0.0')
@@ -96,9 +97,21 @@ RSpec.describe GemCheckUpdates::Gem do
     end
 
     context 'on minor update' do
+      let(:scope) { GemCheckUpdates::VersionScope::MINOR }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope) }
+
+      it 'updates major version' do
+        expect(latest_version).to eq('0.2.0')
+      end
     end
 
     context 'on patch update' do
+      let(:scope) { GemCheckUpdates::VersionScope::PATCH }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope) }
+
+      it 'updates major version' do
+        expect(latest_version).to eq('0.0.2')
+      end
     end
   end
 end

@@ -29,7 +29,7 @@ RSpec.describe GemCheckUpdates::Runner do
           patch: true
         }
       end
-      let(:scope){GemCheckUpdates::Runner.update_scope(options)}
+      let(:scope) { GemCheckUpdates::Runner.update_scope(options) }
 
       it 'returns major update scope' do
         expect(scope).to eq(GemCheckUpdates::VersionScope::MAJOR)
@@ -44,7 +44,7 @@ RSpec.describe GemCheckUpdates::Runner do
           patch: true
         }
       end
-      let(:scope){GemCheckUpdates::Runner.update_scope(options)}
+      let(:scope) { GemCheckUpdates::Runner.update_scope(options) }
 
       it 'returns major update scope' do
         expect(scope).to eq(GemCheckUpdates::VersionScope::MINOR)
@@ -59,7 +59,7 @@ RSpec.describe GemCheckUpdates::Runner do
           patch: true
         }
       end
-      let(:scope){GemCheckUpdates::Runner.update_scope(options)}
+      let(:scope) { GemCheckUpdates::Runner.update_scope(options) }
 
       it 'returns major update scope' do
         expect(scope).to eq(GemCheckUpdates::VersionScope::PATCH)
