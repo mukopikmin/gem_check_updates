@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'simplecov'
-SimpleCov.start 'rails'
+SimpleCov.start
 
 require 'bundler/setup'
 require 'gem_check_updates'
