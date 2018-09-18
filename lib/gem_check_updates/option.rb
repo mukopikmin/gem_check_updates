@@ -3,7 +3,7 @@
 module GemCheckUpdates
   class Option
     attr_reader :apply
-    attr_accessor :file, :major, :minor, :patch
+    attr_accessor :file, :major, :minor, :patch, :include_beta
 
     def initialize
       @file = './Gemfile'
@@ -11,10 +11,11 @@ module GemCheckUpdates
       @major = true
       @minor = false
       @patch = false
+      @include_beta = false
     end
 
     def self.parse(argv)
-      options = new
+      optionss = new
 
       OptionParser.new do |opt|
         opt.version = GemCheckUpdates::VERSION
@@ -36,6 +37,7 @@ module GemCheckUpdates
           options.minor = !v
           options.patch = v
         end
+        opt.on('-i', '--include-beta', "Check updates of beta release, including alpha or release candidate (Default: #{options.include_beta})")
 
         opt.parse!(argv)
       end
