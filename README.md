@@ -16,11 +16,53 @@ This gem is inspired by [tjunnone/npm-check-updates](https://github.com/tjunnone
 
 See references with option `-h` or `--help`.
 
-    $ gem-check-updates
+    $ gem-check-updates -h
+
+    Usage: run [options]
+    -f, --file Gemfile               Path to Gemfile (default: ./Gemfile)
+    -a, --apply                      Apply updates (default: false)
+        --major                      Update major version (default: true)
+        --minor                      Update minor version (default: false)
+        --patch                      Update patch version (default: false)
+    -i, --include-beta               Check updates of beta release, including alpha or release candidate (Default: false)
 
 Also you can run command as follows.
 
     $ gcu
+
+### Examples
+
+Check updates for the specified Gemfile in current working directory.
+
+    $ gcm -f path/to/Gemfile
+
+    ....
+
+    Checking major updates are completed.
+
+    You can update following newer gems.
+    If you want to apply these updates, run command with option --apply.
+    Running with --apply option will overwrite your Gemfile.
+
+        rails                       "~> 5.1.0"   →    "~> 5.2.1"
+        puma                        "~> 3.10"    →    "~> 3.9.1"
+        byebug                      "~> 10.0.0"  →    "~> 9.1.0"
+        rspec-rails                 "~> 3.7.2"   →    "~> 3.8.0"
+
+Check and overwrite existing Gemfile.
+
+    $ gcm -f path/to/Gemfile --apply
+
+    ....
+
+    Checking major updates are completed.
+
+    Following gems have been updated!
+
+        rails                       "~> 5.1.0"   →    "~> 5.2.1"
+        puma                        "~> 3.10"    →    "~> 3.9.1"
+        byebug                      "~> 10.0.0"  →    "~> 9.1.0"
+        rspec-rails                 "~> 3.7.2"   →    "~> 3.8.0"
 
 ## Development
 
