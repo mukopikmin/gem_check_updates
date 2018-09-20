@@ -122,4 +122,24 @@ RSpec.describe GemCheckUpdates::Gem do
       end
     end
   end
+
+  describe '.ignore_beta' do
+    context 'with beta suffixed version' do
+      let(:version) { '1.0.0.beta1' }
+      let(:ignored_version) { GemCheckUpdates::Gem.ignore_beta(version) }
+
+      it 'returns only 3 parts of version number' do
+        expect(ignored_version).to eq('1.0.0')
+      end
+    end
+
+    context 'without beta suffixed version' do
+      let(:version) { '1.0.0' }
+      let(:ignored_version) { GemCheckUpdates::Gem.ignore_beta(version) }
+
+      it 'returns only 3 parts of version number' do
+        expect(ignored_version).to eq('1.0.0')
+      end
+    end
+  end
 end

@@ -44,13 +44,7 @@ module GemCheckUpdates
 
     def scoped_latest_version(versions, scope, include_beta)
       numbers = versions.map { |v| v['number'] }
-                        .map do |v|
-        if include_beta
-          v
-        else
-          ignore_beta(v)
-              end
-      end
+                        .map { |v| include_beta ? v : self.class.ignore_beta(v) }
       current_major, current_minor = @current_version.split('.')
 
       case scope
@@ -67,7 +61,7 @@ module GemCheckUpdates
       end
     end
 
-    def ignore_beta(version)
+    def self.ignore_beta(version)
       parts = version.split('.')
       parts.pop if /^.+\..+\..+\..+$/.match?(version)
 
