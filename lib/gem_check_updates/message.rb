@@ -2,6 +2,9 @@
 
 module GemCheckUpdates
   class Message
+    NAME_MAX_LENGTH = 30
+    VERSION_MAX_LENGTH = 15
+
     def self.out(str)
       return if ENV['RACK_ENV'] == 'test'
 
@@ -13,8 +16,9 @@ module GemCheckUpdates
         Checking #{gemfile.option.update_scope.green} updates are completed.
 
         You can update following newer gems.
-        If you want to apply these updates, run command with option \'-a\'.
-        #{'(Caution: This option will overwrite your Gemfile)'.red}
+        If you want to apply these updates, run command with option #{'--apply'.green}.
+
+        #{'Running with --apply option will overwrite your Gemfile.'.red}
 
         #{gems_version_diff(gemfile)}
 
@@ -37,7 +41,12 @@ module GemCheckUpdates
     def self.gems_version_diff(gemfile)
       gemfile.gems
              .select(&:update_available?)
-             .map { |gem| "    #{gem.name} \"#{gem.version_range} #{gem.current_version}\" → \"#{gem.version_range} #{gem.latest_version.green}\"" }.join("\n")
+             .map do |gem|
+        "    #{gem.name.ljust(NAME_MAX_LENGTH)}" +
+          "\"#{gem.version_range} #{gem.current_version}\"".ljust(VERSION_MAX_LENGTH) +
+          '→'.center(7) +
+          "\"#{gem.version_range} #{gem.latest_version.green}\""
+      end .join("\n")
     end
   end
 end
