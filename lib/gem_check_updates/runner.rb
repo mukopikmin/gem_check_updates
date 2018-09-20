@@ -3,23 +3,23 @@
 module GemCheckUpdates
   class Runner
     def self.run(argv)
-      options = Option.parse(argv)
-      gemfile = Gemfile.new(options.file, options.update_scope)
+      option = Option.parse(argv)
+      gemfile = Gemfile.new(option)
 
-      if options.apply
+      if option.apply
         begin
           gemfile.backup
           gemfile.update
           gemfile.remove_backup
 
-          GemCheckUpdates::Message.update_completed(gemfile, options.update_scope)
+          GemCheckUpdates::Message.update_completed(gemfile)
         rescue StandardError => e
           gemfile.restore
 
           GemCheckUpdates::Message.out(e.message.red)
         end
       else
-        GemCheckUpdates::Message.updatable_gems(gemfile, options.update_scope)
+        GemCheckUpdates::Message.updatable_gems(gemfile)
       end
     end
   end

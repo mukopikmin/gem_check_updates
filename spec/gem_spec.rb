@@ -52,14 +52,13 @@ RSpec.describe GemCheckUpdates::Gem do
   describe '#check_update!' do
     context 'with success version check' do
       let(:gem) { GemCheckUpdates::Gem.new(name: 'example', current_version: '0.0.1', version_range: '~>') }
-      let(:version) { '1.0.0' }
       let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
       before(:each) { gem.check_update!(GemCheckUpdates::VersionScope::MAJOR) }
 
       it 'sets latest_version' do
-        expect(gem.latest_version).to eq(version)
+        expect(gem.latest_version).to eq('1.0.0')
       end
     end
 
@@ -89,7 +88,7 @@ RSpec.describe GemCheckUpdates::Gem do
 
     context 'on major update' do
       let(:scope) { GemCheckUpdates::VersionScope::MAJOR }
-      let(:latest_version) { gem.scoped_latest_version(versions, scope) }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope, false) }
 
       it 'updates major version' do
         expect(latest_version).to eq('1.0.0')
@@ -98,7 +97,7 @@ RSpec.describe GemCheckUpdates::Gem do
 
     context 'on minor update' do
       let(:scope) { GemCheckUpdates::VersionScope::MINOR }
-      let(:latest_version) { gem.scoped_latest_version(versions, scope) }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope, false) }
 
       it 'updates major version' do
         expect(latest_version).to eq('0.2.0')
@@ -107,10 +106,19 @@ RSpec.describe GemCheckUpdates::Gem do
 
     context 'on patch update' do
       let(:scope) { GemCheckUpdates::VersionScope::PATCH }
-      let(:latest_version) { gem.scoped_latest_version(versions, scope) }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope, false) }
 
       it 'updates major version' do
         expect(latest_version).to eq('0.0.2')
+      end
+    end
+
+    context 'on including beta version update' do
+      let(:scope) { GemCheckUpdates::VersionScope::MAJOR }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope, true) }
+
+      it 'updates major version' do
+        expect(latest_version).to eq('1.0.0.beta1')
       end
     end
   end

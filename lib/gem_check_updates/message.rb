@@ -8,9 +8,9 @@ module GemCheckUpdates
       print str
     end
 
-    def self.updatable_gems(gemfile, scope)
+    def self.updatable_gems(gemfile)
       out <<~VERSIONS
-        Checking #{scope.green} updates are completed.
+        Checking #{gemfile.option.update_scope.green} updates are completed.
 
         You can update following newer gems.
         If you want to apply these updates, run command with option \'-a\'.
@@ -22,9 +22,9 @@ module GemCheckUpdates
       VERSIONS
     end
 
-    def self.update_completed(gemfile, scope)
+    def self.update_completed(gemfile)
       out <<~VERSIONS
-        Checking #{scope.green} updates are completed.
+        Checking #{gemfile.option.update_scope.green} updates are completed.
 
         Following gems have been updated!
 

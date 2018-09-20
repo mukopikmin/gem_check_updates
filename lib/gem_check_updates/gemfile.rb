@@ -2,20 +2,20 @@
 
 module GemCheckUpdates
   class Gemfile
-    attr_reader :file, :file_backup, :gems
+    attr_reader :option, :file_backup, :gems
 
-    def initialize(file, update_scope)
-      @file = file
-      @file_backup = "#{@file}.backup"
-      @gems = parse(update_scope)
+    def initialize(option = GemCheckUpdates::Option.new)
+      @option = option
+      @file_backup = "#{option.file}.backup"
+      @gems = parse(option.update_scope)
     end
 
     def backup
-      FileUtils.cp(@file, @file_backup)
+      FileUtils.cp(@option.file, @file_backup)
     end
 
     def restore
-      FileUtils.mv(@file_backup, @file)
+      FileUtils.mv(@file_backup, @option.file)
     end
 
     def remove_backup
@@ -23,7 +23,7 @@ module GemCheckUpdates
     end
 
     def parse(update_scope)
-      gems = Bundler::Definition.build(@file, nil, nil).dependencies.map do |gem|
+      gems = Bundler::Definition.build(@option.file, nil, nil).dependencies.map do |gem|
         GemCheckUpdates::Message.out('.')
 
         name = gem.name
@@ -42,13 +42,13 @@ module GemCheckUpdates
 
     def update
       gemfile_lines = []
-      File.open(@file) do |current|
+      File.open(@option.file) do |current|
         current.each_line do |line|
           gemfile_lines << line
         end
       end
 
-      File.open(@file, 'w') do |updated|
+      File.open(@option.file, 'w') do |updated|
         gemfile_lines.each do |line|
           matcher = line.match(/gem ['"](.+?)['"]\s*,\s*['"][>=|~>]*\s+(.+?)['"]/)
 

@@ -5,8 +5,8 @@ module GemCheckUpdates
     attr_reader :apply
     attr_accessor :file, :major, :minor, :patch, :include_beta
 
-    def initialize
-      @file = './Gemfile'
+    def initialize(file: './Gemfile')
+      @file = file
       @apply = false
       @major = true
       @minor = false
@@ -15,34 +15,34 @@ module GemCheckUpdates
     end
 
     def self.parse(argv)
-      optionss = new
+      option = new
 
       OptionParser.new do |opt|
         opt.version = GemCheckUpdates::VERSION
 
-        opt.on('-f Gemfile', '--file', "Path to Gemfile (default: #{options.file})") { |v| options.file = v }
-        opt.on('-a', '--apply', "Apply updates (default: #{options.apply})") { |v| options.apply = v }
-        opt.on('--major', "Update major version (default: #{options.major})") do |v|
-          options.major = v
-          options.minor = !v
-          options.patch = !v
+        opt.on('-f Gemfile', '--file', "Path to Gemfile (default: #{option.file})") { |v| option.file = v }
+        opt.on('-a', '--apply', "Apply updates (default: #{option.apply})") { |v| option.apply = v }
+        opt.on('--major', "Update major version (default: #{option.major})") do |v|
+          option.major = v
+          option.minor = !v
+          option.patch = !v
         end
-        opt.on('--minor', "Update minor version (default: #{options.minor})") do |v|
-          options.major = !v
-          options.minor = v
-          options.patch = !v
+        opt.on('--minor', "Update minor version (default: #{option.minor})") do |v|
+          option.major = !v
+          option.minor = v
+          option.patch = !v
         end
-        opt.on('--patch', "Update patch version (default: #{options.patch})") do |v|
-          options.major = !v
-          options.minor = !v
-          options.patch = v
+        opt.on('--patch', "Update patch version (default: #{option.patch})") do |v|
+          option.major = !v
+          option.minor = !v
+          option.patch = v
         end
-        opt.on('-i', '--include-beta', "Check updates of beta release, including alpha or release candidate (Default: #{options.include_beta})")
+        opt.on('-i', '--include-beta', "Check updates of beta release, including alpha or release candidate (Default: #{option.include_beta})")
 
         opt.parse!(argv)
       end
 
-      options
+      option
     end
 
     def update_scope

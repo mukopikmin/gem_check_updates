@@ -27,11 +27,11 @@ module GemCheckUpdates
         @latest_version > @current_version
     end
 
-    def check_update!(update_scope)
+    def check_update!(update_scope, include_beta = false)
       response = RestClient.get("#{RUBYGEMS_API}/#{name}.json")
       versions = JSON.parse(response.body)
 
-      @latest_version = scoped_latest_version(versions, update_scope)
+      @latest_version = scoped_latest_version(versions, update_scope, include_beta)
 
       self
     rescue StandardError => e
@@ -42,8 +42,15 @@ module GemCheckUpdates
       GemCheckUpdates::Message.out(e.message.red)
     end
 
-    def scoped_latest_version(versions, scope)
+    def scoped_latest_version(versions, scope, include_beta)
       numbers = versions.map { |v| v['number'] }
+                        .map do |v|
+        if include_beta
+          v
+        else
+          ignore_beta(v)
+              end
+      end
       current_major, current_minor = @current_version.split('.')
 
       case scope
@@ -58,6 +65,13 @@ module GemCheckUpdates
         # This branch is equal to specifying major updates
         numbers.max
       end
+    end
+
+    def ignore_beta(version)
+      parts = version.split('.')
+      parts.pop if /^.+\..+\..+\..+$/.match?(version)
+
+      parts.join('.')
     end
   end
 end
