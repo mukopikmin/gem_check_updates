@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module GemCheckUpdates
-  RUBYGEMS_API = 'https://rubygems.org/api/v1/versions'
-
   class Gem
+    RUBYGEMS_API = 'https://rubygems.org/api/v1/versions'
+
     attr_reader :name,
                 :latest_version,
                 :current_version,
@@ -27,11 +27,11 @@ module GemCheckUpdates
         @latest_version > @current_version
     end
 
-    def check_update!(update_scope, include_beta = false)
+    def check_update!(update_scope)
       response = RestClient.get("#{RUBYGEMS_API}/#{name}.json")
       versions = JSON.parse(response.body)
 
-      @latest_version = scoped_latest_version(versions, update_scope, include_beta)
+      @latest_version = scoped_latest_version(versions, update_scope)
 
       self
     rescue StandardError => e
@@ -42,30 +42,26 @@ module GemCheckUpdates
       GemCheckUpdates::Message.out(e.message.red)
     end
 
-    def scoped_latest_version(versions, scope, include_beta)
+    def scoped_latest_version(versions, scope)
+      # Ignore numbres which is smaller than patch version (ex. beta, rc), and sort desc
       numbers = versions.map { |v| v['number'] }
-                        .map { |v| include_beta ? v : self.class.ignore_beta(v) }
+                        .select { |v| v.split('.').size < 4 }
+                        .sort_by { |v| v.split('.').map(&:to_i)[0, 3] }
+                        .reverse
       current_major, current_minor = @current_version.split('.')
 
       case scope
       when GemCheckUpdates::VersionScope::MINOR
-        numbers.select { |n| n.split('.').first == current_major }.max
+        numbers.select { |n| n.split('.').first == current_major }.first
       when GemCheckUpdates::VersionScope::PATCH
         numbers.select do |n|
           major, minor = n.split('.')
           major == current_major && minor == current_minor
-        end.max
+        end.first
       else
         # This branch is equal to specifying major updates
         numbers.max
       end
-    end
-
-    def self.ignore_beta(version)
-      parts = version.split('.')
-      parts.pop if /^.+\..+\..+\..+$/.match?(version)
-
-      parts.join('.')
     end
   end
 end

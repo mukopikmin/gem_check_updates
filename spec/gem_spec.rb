@@ -88,7 +88,7 @@ RSpec.describe GemCheckUpdates::Gem do
 
     context 'on major update' do
       let(:scope) { GemCheckUpdates::VersionScope::MAJOR }
-      let(:latest_version) { gem.scoped_latest_version(versions, scope, false) }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope) }
 
       it 'updates major version' do
         expect(latest_version).to eq('1.0.0')
@@ -97,48 +97,19 @@ RSpec.describe GemCheckUpdates::Gem do
 
     context 'on minor update' do
       let(:scope) { GemCheckUpdates::VersionScope::MINOR }
-      let(:latest_version) { gem.scoped_latest_version(versions, scope, false) }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope) }
 
       it 'updates major version' do
-        expect(latest_version).to eq('0.2.0')
+        expect(latest_version).to eq('0.10.0')
       end
     end
 
     context 'on patch update' do
       let(:scope) { GemCheckUpdates::VersionScope::PATCH }
-      let(:latest_version) { gem.scoped_latest_version(versions, scope, false) }
+      let(:latest_version) { gem.scoped_latest_version(versions, scope) }
 
       it 'updates major version' do
         expect(latest_version).to eq('0.0.2')
-      end
-    end
-
-    context 'on including beta version update' do
-      let(:scope) { GemCheckUpdates::VersionScope::MAJOR }
-      let(:latest_version) { gem.scoped_latest_version(versions, scope, true) }
-
-      it 'updates major version' do
-        expect(latest_version).to eq('1.0.0.beta1')
-      end
-    end
-  end
-
-  describe '.ignore_beta' do
-    context 'with beta suffixed version' do
-      let(:version) { '1.0.0.beta1' }
-      let(:ignored_version) { GemCheckUpdates::Gem.ignore_beta(version) }
-
-      it 'returns only 3 parts of version number' do
-        expect(ignored_version).to eq('1.0.0')
-      end
-    end
-
-    context 'without beta suffixed version' do
-      let(:version) { '1.0.0' }
-      let(:ignored_version) { GemCheckUpdates::Gem.ignore_beta(version) }
-
-      it 'returns only 3 parts of version number' do
-        expect(ignored_version).to eq('1.0.0')
       end
     end
   end
