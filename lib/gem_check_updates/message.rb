@@ -9,7 +9,7 @@ module GemCheckUpdates
     end
 
     def self.updatable_gems(gemfile)
-      out <<~EOS
+      out <<~MSG
         Checking #{gemfile.option.update_scope.green} updates are completed.
 
         You can update following newer gems.
@@ -20,11 +20,11 @@ module GemCheckUpdates
         #{gems_version_diff(gemfile)}
 
 
-      EOS
+      MSG
     end
 
     def self.update_completed(gemfile)
-      out <<~EOS
+      out <<~MSG
         Checking #{gemfile.option.update_scope.green} updates are completed.
 
         Following gems have been updated!
@@ -32,7 +32,7 @@ module GemCheckUpdates
         #{gems_version_diff(gemfile)}
 
 
-      EOS
+      MSG
     end
 
     def self.gems_version_diff(gemfile)
