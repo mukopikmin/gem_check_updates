@@ -35,7 +35,7 @@ GEM
     powerpack (0.1.2)
     public_suffix (3.0.3)
     rainbow (3.0.0)
-    rake (10.5.0)
+    rake (12.3.1)
     rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
@@ -81,13 +81,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.16)
-  codeclimate-test-reporter (~> 1.0)
+  bundler (~> 1.16.5)
+  codeclimate-test-reporter (~> 1.0.8)
   gem_check_updates!
-  rake (~> 10.0)
-  rspec (~> 3.0)
+  rake (~> 12.3.1)
+  rspec (~> 3.8.0)
   rubocop (~> 0.59.1)
-  webmock (~> 3.4)
+  webmock (~> 3.4.2)
 
 BUNDLED WITH
-   1.16.3
+   1.16.5

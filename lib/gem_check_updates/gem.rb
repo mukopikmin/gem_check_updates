@@ -16,6 +16,7 @@ module GemCheckUpdates
       @name = name
       @current_version = current_version
       @version_range = version_range
+      @latest_version = nil
 
       check_update!(update_scope)
     end
@@ -35,8 +36,6 @@ module GemCheckUpdates
 
       self
     rescue StandardError => e
-      @latest_version = nil
-
       GemCheckUpdates::Message.out("Failed to check version \"#{@name}\".".red)
       GemCheckUpdates::Message.out("\n\n")
       GemCheckUpdates::Message.out(e.message.red)
@@ -62,6 +61,15 @@ module GemCheckUpdates
         # This branch is equal to specifying major updates
         numbers.max
       end
+    end
+
+    def highlighted_latest_version
+      Array.new(3) do |i|
+        c = @current_version.split('.')[i]
+        l = @latest_version.split('.')[i]
+
+        c == l ? l : l.green
+      end.join('.')
     end
   end
 end

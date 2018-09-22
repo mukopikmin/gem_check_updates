@@ -2,9 +2,6 @@
 
 module GemCheckUpdates
   class Message
-    NAME_MAX_LENGTH = 30
-    VERSION_MAX_LENGTH = 15
-
     def self.out(str)
       return if ENV['RACK_ENV'] == 'test'
 
@@ -12,7 +9,7 @@ module GemCheckUpdates
     end
 
     def self.updatable_gems(gemfile)
-      out <<~VERSIONS
+      out <<~MSG
         Checking #{gemfile.option.update_scope.green} updates are completed.
 
         You can update following newer gems.
@@ -23,11 +20,11 @@ module GemCheckUpdates
         #{gems_version_diff(gemfile)}
 
 
-      VERSIONS
+      MSG
     end
 
     def self.update_completed(gemfile)
-      out <<~VERSIONS
+      out <<~MSG
         Checking #{gemfile.option.update_scope.green} updates are completed.
 
         Following gems have been updated!
@@ -35,18 +32,19 @@ module GemCheckUpdates
         #{gems_version_diff(gemfile)}
 
 
-      VERSIONS
+      MSG
     end
 
     def self.gems_version_diff(gemfile)
       gemfile.gems
              .select(&:update_available?)
              .map do |gem|
-        "    #{gem.name.ljust(NAME_MAX_LENGTH)}" +
-          "\"#{gem.version_range} #{gem.current_version}\"".ljust(VERSION_MAX_LENGTH) +
-          '→'.center(7) +
-          "\"#{gem.version_range} #{gem.latest_version.green}\""
-      end .join("\n")
+               name = gem.name
+               current = "#{gem.version_range} #{gem.current_version}"
+               latest = "#{gem.version_range} #{gem.highlighted_latest_version}"
+
+               "    #{name.ljust(30)} #{current.ljust(15)} #{'→'.ljust(7)} #{latest}"
+             end.join("\n")
     end
   end
 end
