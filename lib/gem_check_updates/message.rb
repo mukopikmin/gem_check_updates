@@ -36,15 +36,19 @@ module GemCheckUpdates
     end
 
     def self.gems_version_diff(gemfile)
-      gemfile.gems
-             .select(&:update_available?)
-             .map do |gem|
-               name = gem.name
-               current = "#{gem.version_range} #{gem.current_version}"
-               latest = "#{gem.version_range} #{gem.highlighted_latest_version}"
+      updatable_gems = gemfile.gems.select(&:update_available?)
 
-               "    #{name.ljust(30)} #{current.ljust(15)} #{'→'.ljust(7)} #{latest}"
-             end.join("\n")
+      if updatable_gems.empty?
+        'There are no updates.'.green
+      else
+        updatable_gems.map do |gem|
+          name = gem.name
+          current = "#{gem.version_range} #{gem.current_version}"
+          latest = "#{gem.version_range} #{gem.highlighted_latest_version}"
+
+          "    #{name.ljust(30)} #{current.ljust(15)} #{'→'.ljust(7)} #{latest}"
+        end.join("\n")
+      end
     end
   end
 end

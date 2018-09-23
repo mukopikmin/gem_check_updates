@@ -42,7 +42,7 @@ module GemCheckUpdates
     end
 
     def scoped_latest_version(versions, scope)
-      # Ignore numbres which is smaller than patch version (ex. beta, rc), and sort desc
+      # Ignore pre release version (ex. beta, rc), and sort desc
       numbers = versions.map { |v| v['number'] }
                         .select { |v| v.split('.').size < 4 }
                         .sort_by { |v| v.split('.').map(&:to_i)[0, 3] }
@@ -59,7 +59,7 @@ module GemCheckUpdates
         end.first
       else
         # This branch is equal to specifying major updates
-        numbers.max
+        numbers.first
       end
     end
 
