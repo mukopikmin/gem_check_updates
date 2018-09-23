@@ -2,8 +2,7 @@
 
 module GemCheckUpdates
   class Option
-    attr_reader :apply
-    attr_accessor :file, :major, :minor, :patch
+    attr_accessor :file, :major, :minor, :patch, :apply
 
     def initialize(file: './Gemfile')
       @file = file
