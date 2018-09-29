@@ -6,6 +6,8 @@ require 'optparse'
 require 'rest-client'
 require 'colored'
 require 'json'
+require 'rake'
+require 'rake/tasklib'
 
 require 'gem_check_updates/version'
 require 'gem_check_updates/version_scope'
