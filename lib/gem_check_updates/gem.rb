@@ -2,23 +2,23 @@
 
 module GemCheckUpdates
   class Gem
-    RUBYGEMS_API = 'https://rubygems.org/api/v1/versions'
+    DEFAULT_SCOPE = GemCheckUpdates::VersionScope::MAJOR
 
-    attr_reader :name,
-                :latest_version,
-                :current_version,
-                :version_range
+    attr_accessor :name
+    attr_accessor :latest_version
+    attr_accessor :current_version
+    attr_accessor :version_range
 
     def initialize(name: nil,
                    current_version: nil,
                    version_range: nil,
-                   update_scope: GemCheckUpdates::VersionScope::MAJOR)
+                   latest_version: nil,
+                   update_scope: DEFAULT_SCOPE)
       @name = name
       @current_version = current_version
       @version_range = version_range
-      @latest_version = nil
-
-      check_update!(update_scope)
+      @latest_version = latest_version
+      @update_scope = update_scope
     end
 
     def update_available?
@@ -28,20 +28,7 @@ module GemCheckUpdates
         @latest_version > @current_version
     end
 
-    def check_update!(update_scope)
-      response = RestClient.get("#{RUBYGEMS_API}/#{name}.json")
-      versions = JSON.parse(response.body)
-
-      @latest_version = scoped_latest_version(versions, update_scope)
-
-      self
-    rescue StandardError => e
-      GemCheckUpdates::Message.out("Failed to check version \"#{@name}\".".red)
-      GemCheckUpdates::Message.out("\n\n")
-      GemCheckUpdates::Message.out(e.message.red)
-    end
-
-    def scoped_latest_version(versions, scope)
+    def scoped_latest_version(versions)
       # Ignore pre release version (ex. beta, rc), and sort desc
       numbers = versions.map { |v| v['number'] }
                         .select { |v| v.split('.').size < 4 }
@@ -49,7 +36,7 @@ module GemCheckUpdates
                         .reverse
       current_major, current_minor = @current_version.split('.')
 
-      case scope
+      case @update_scope
       when GemCheckUpdates::VersionScope::MINOR
         numbers.select { |n| n.split('.').first == current_major }.first
       when GemCheckUpdates::VersionScope::PATCH

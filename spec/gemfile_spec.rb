@@ -6,7 +6,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   describe '#backup' do
     let(:file) { 'spec/fixtures/gemfile/success' }
     let(:option) { GemCheckUpdates::Option.new(file: file) }
-    let(:gemfile) { GemCheckUpdates::Gemfile.new(option) }
+    let(:gemfile) { described_class.new(option) }
     let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
@@ -21,7 +21,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   describe '#restore' do
     let(:file) { 'spec/fixtures/gemfile/success' }
     let(:option) { GemCheckUpdates::Option.new(file: file) }
-    let(:gemfile) { GemCheckUpdates::Gemfile.new(option) }
+    let(:gemfile) { described_class.new(option) }
     let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
@@ -36,7 +36,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
   describe '#remove_backup' do
     let(:file) { 'spec/fixtures/gemfile/success' }
     let(:option) { GemCheckUpdates::Option.new(file: file) }
-    let(:gemfile) { GemCheckUpdates::Gemfile.new(option) }
+    let(:gemfile) { described_class.new(option) }
     let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
@@ -52,7 +52,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
     context 'with parsable Gemfile' do
       let(:file) { 'spec/fixtures/gemfile/success' }
       let(:option) { GemCheckUpdates::Option.new(file: file) }
-      let(:gemfile) { GemCheckUpdates::Gemfile.new(option) }
+      let(:gemfile) { described_class.new(option) }
       let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
 
       before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
@@ -68,17 +68,30 @@ RSpec.describe GemCheckUpdates::Gemfile do
       let(:option) { GemCheckUpdates::Option.new(file: file) }
 
       it 'returns parsed gems' do
-        expect { GemCheckUpdates::Gemfile.new(option) }.to raise_error(Bundler::Dsl::DSLError)
+        expect { described_class.new(option) }.to raise_error(Bundler::Dsl::DSLError)
       end
+    end
+  end
+
+  describe '#check_update!' do
+    let(:file) { 'spec/fixtures/gemfile/success' }
+    let(:option) { GemCheckUpdates::Option.new(file: file) }
+    let(:gemfile) { described_class.new(option) }
+    let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
+
+    before { stub_request(:get, /rubygems.org/).to_return(body: response) }
+
+    it 'fills latest_version in gem' do
+      expect(gemfile.check_updates!.map(&:latest_version)).to all(be_a(String))
     end
   end
 
   describe '#update' do
     let(:file) { 'spec/fixtures/gemfile/success' }
     let(:option) { GemCheckUpdates::Option.new(file: file) }
-    let(:gemfile) { GemCheckUpdates::Gemfile.new(option) }
+    let(:gemfile) { described_class.new(option) }
     let(:response) { JSON.parse(File.read('spec/fixtures/rubygems.org/versions.json')).to_json }
-    let(:updatable_gems) { GemCheckUpdates::Gemfile.new(option).gems.select(&:update_available?) }
+    let(:updatable_gems) { described_class.new(option).gems.select(&:update_available?) }
 
     before(:each) { stub_request(:get, /rubygems.org/).to_return(body: response) }
     before(:each) { gemfile.backup }

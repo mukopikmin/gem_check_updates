@@ -2,12 +2,19 @@
 
 module GemCheckUpdates
   class Gemfile
-    attr_reader :option, :file_backup, :gems
+    RUBYGEMS_API = 'https://rubygems.org/api/v1/versions'
+    CONCURRENCY = 5
+
+    attr_reader :option
+    attr_reader :file_backup
+    attr_reader :gems
 
     def initialize(option = GemCheckUpdates::Option.new)
       @option = option
       @file_backup = "#{option.file}.backup"
       @gems = parse(option.update_scope)
+
+      check_updates!
     end
 
     def backup
@@ -23,9 +30,7 @@ module GemCheckUpdates
     end
 
     def parse(update_scope)
-      gems = Bundler::Definition.build(@option.file, nil, nil).dependencies.map do |gem|
-        GemCheckUpdates::Message.out('.')
-
+      Bundler::Definition.build(@option.file, nil, nil).dependencies.map do |gem|
         name = gem.name
         version_range, version = gem.requirements_list.first.split(' ')
 
@@ -34,14 +39,28 @@ module GemCheckUpdates
                 version_range: version_range,
                 update_scope: update_scope)
       end
+    end
 
-      GemCheckUpdates::Message.out("\n\n")
+    def check_updates!
+      EventMachine.synchrony do
+        EventMachine::Synchrony::FiberIterator.new(@gems, CONCURRENCY).each do |gem|
+          http = EM::HttpRequest.new("#{RUBYGEMS_API}/#{gem.name}.json").get
+          versions = JSON.parse(http.response)
 
-      gems
+          gem.latest_version = gem.scoped_latest_version(versions)
+          GemCheckUpdates::Message.out('.')
+        end
+
+        GemCheckUpdates::Message.out("\n\n")
+        EventMachine.stop
+      end
+
+      @gems
     end
 
     def update
       gemfile_lines = []
+
       File.open(@option.file) do |current|
         current.each_line do |line|
           gemfile_lines << line
