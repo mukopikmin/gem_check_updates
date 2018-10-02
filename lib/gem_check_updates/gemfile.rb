@@ -32,7 +32,8 @@ module GemCheckUpdates
     def parse(update_scope)
       Bundler::Definition.build(@option.file, nil, nil).dependencies.map do |gem|
         name = gem.name
-        version_range, version = gem.requirements_list.first.split(' ')
+        version_range, version_number = gem.requirements_list.first.split(' ')
+        version = GemCheckUpdates::GemVersion.new(number: version_number)
 
         Gem.new(name: name,
                 current_version: version,
@@ -44,10 +45,16 @@ module GemCheckUpdates
     def check_updates!
       EventMachine.synchrony do
         EventMachine::Synchrony::FiberIterator.new(@gems, CONCURRENCY).each do |gem|
-          http = EM::HttpRequest.new("#{RUBYGEMS_API}/#{gem.name}.json").get
-          versions = JSON.parse(http.response)
+          http = EventMachine::HttpRequest.new("#{RUBYGEMS_API}/#{gem.name}.json").get
+          response = JSON.parse(http.response)
+          versions = response.map do |v| 
+            number = v['number']
+            pre_release = v['prerelease']
 
-          gem.latest_version = gem.scoped_latest_version(versions)
+            GemCheckUpdates::GemVersion.new(number: number, pre_release: pre_release)
+          end
+
+          gem.versions = versions
           GemCheckUpdates::Message.out('.')
         end
 
