@@ -47,7 +47,7 @@ module GemCheckUpdates
         EventMachine::Synchrony::FiberIterator.new(@gems, CONCURRENCY).each do |gem|
           http = EventMachine::HttpRequest.new("#{RUBYGEMS_API}/#{gem.name}.json").get
           response = JSON.parse(http.response)
-          versions = response.map do |v| 
+          versions = response.map do |v|
             number = v['number']
             pre_release = v['prerelease']
 
@@ -82,7 +82,7 @@ module GemCheckUpdates
             _, name, old_version = *matcher
             target = @gems.find { |gem| gem.name == name }
 
-            line.gsub!(old_version, target.latest_version) unless target.nil?
+            line.gsub!(old_version, target.latest_version.to_s) unless target.nil?
           end
 
           updated.puts(line)

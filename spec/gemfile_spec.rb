@@ -82,7 +82,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
     before { stub_request(:get, /rubygems.org/).to_return(body: response) }
 
     it 'fills latest_version in gem' do
-      expect(gemfile.check_updates!.map(&:latest_version)).to all(be_a(String))
+      expect(gemfile.check_updates!.map(&:latest_version)).to all(be_a(GemCheckUpdates::GemVersion))
     end
   end
 
@@ -99,7 +99,7 @@ RSpec.describe GemCheckUpdates::Gemfile do
     after(:each) { gemfile.restore }
 
     it 'overwrite Gemfile with newer version' do
-      expect(updatable_gems.map(&:current_version)).to all(be >= '1.0')
+      expect(updatable_gems.map(&:current_version).map(&:number)).to all(be >= '1.0')
     end
   end
 end

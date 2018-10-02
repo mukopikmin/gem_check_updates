@@ -11,7 +11,7 @@ module GemCheckUpdates
     attr_accessor :pre
     attr_accessor :pre_release
 
-    def initialize(number: nil, pre_release: false)
+    def initialize(number: '0', pre_release: false)
       @number = number
       @major, @minor, @patch, @pre = number.split('.')
       @pre_release = pre_release
@@ -21,19 +21,19 @@ module GemCheckUpdates
       @number != '0'
     end
 
-    def weighted_version
-      weights = [100, 10, 1]
-
-      [@major, @minor, @patch].map(&:to_i)
-                              .map.with_index { |n, i| n * weights[i] }
-    end
-
     def <=>(other)
       weighted_version <=> other.weighted_version
     end
 
     def to_s
       @number
+    end
+
+    def weighted_version
+      weights = [100, 10, 1]
+
+      [@major, @minor, @patch].map(&:to_i)
+                              .map.with_index { |n, i| n * weights[i] }
     end
   end
 end
