@@ -3,7 +3,7 @@
 module GemCheckUpdates
   class Gemfile
     RUBYGEMS_API = 'https://rubygems.org/api/v1/versions'
-    CONCURRENCY = 5
+    CONCURRENCY = 3
 
     attr_reader :option
     attr_reader :file_backup
