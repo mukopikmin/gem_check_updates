@@ -5,7 +5,6 @@ module GemCheckUpdates
     DEFAULT_SCOPE = GemCheckUpdates::VersionScope::MAJOR
 
     attr_accessor :name
-    attr_accessor :latest_version
     attr_accessor :current_version
     attr_accessor :versions
     attr_accessor :version_range
@@ -14,7 +13,6 @@ module GemCheckUpdates
                    current_version: nil,
                    versions: [],
                    version_range: nil,
-                   latest_version: nil,
                    update_scope: DEFAULT_SCOPE)
       @name = name
       @current_version = current_version
