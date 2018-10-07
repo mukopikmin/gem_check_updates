@@ -7,20 +7,19 @@ module GemCheckUpdates
       gemfile = Gemfile.new(option)
 
       if option.apply
-        begin
-          gemfile.backup
-          gemfile.update
-          gemfile.remove_backup
+        gemfile.backup
+        gemfile.update
+        gemfile.remove_backup
 
-          GemCheckUpdates::Message.update_completed(gemfile)
-        rescue StandardError => e
-          gemfile.restore
-
-          GemCheckUpdates::Message.out(e.message.red)
-        end
+        GemCheckUpdates::Message.update_completed(gemfile)
       else
         GemCheckUpdates::Message.updatable_gems(gemfile)
       end
+    rescue StandardError => e
+      gemfile&.restore
+
+      GemCheckUpdates::Message.out(e.message.red)
+      exit(1)
     end
   end
 end

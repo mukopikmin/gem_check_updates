@@ -20,6 +20,3 @@ require 'gem_check_updates/gemfile'
 require 'gem_check_updates/gem_version'
 require 'gem_check_updates/gem'
 require 'gem_check_updates/runner'
-
-module GemCheckUpdates
-end
