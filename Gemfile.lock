@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gem_check_updates (0.3.1)
+    gem_check_updates (0.3.2)
       colored (~> 1.2)
       em-http-request (~> 1.1)
       em-synchrony (~> 1.0)
@@ -55,7 +55,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.0)
-    rubocop (0.59.1)
+    rubocop (0.59.2)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.5, != 2.5.1.1)
