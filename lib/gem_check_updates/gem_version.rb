@@ -13,7 +13,7 @@ module GemCheckUpdates
 
     def initialize(number: '0', pre_release: false)
       @number = number
-      @major, @minor, @patch, @pre = number.split('.')
+      @major, @minor, @patch, @pre = number.split('.').concat(%w[0 0 0 0])
       @pre_release = pre_release
     end
 

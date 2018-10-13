@@ -3,6 +3,20 @@
 require 'spec_helper'
 
 RSpec.describe GemCheckUpdates::Gem do
+  describe '.new' do
+    context 'with pre version' do
+      subject { GemCheckUpdates::GemVersion.new(number: '0.0.1.beta').pre }
+
+      it { is_expected.to eq('beta') }
+    end
+
+    context 'without pre version' do
+      subject { GemCheckUpdates::GemVersion.new(number: '0.0.1').pre }
+
+      it { is_expected.to eq('0') }
+    end
+  end
+
   describe '#update_available?' do
     let(:versions) do
       [
