@@ -65,14 +65,8 @@ RSpec.describe GemCheckUpdates::Gem do
   end
 
   describe '#latest_version' do
-    let(:versions) do
-      [
-        GemCheckUpdates::GemVersion.new(number: '0.0.1'),
-        GemCheckUpdates::GemVersion.new(number: '0.0.2'),
-        GemCheckUpdates::GemVersion.new(number: '0.10.0'),
-        GemCheckUpdates::GemVersion.new(number: '1.0.0')
-      ]
-    end
+    let(:numbers) { ['0.0.1', '0.0.2', '0.9.0', '0.10.0', '1.0.0'] }
+    let(:versions) { numbers.map { |n| GemCheckUpdates::GemVersion.new(number: n) } }
 
     context 'on major update' do
       let(:gem) do

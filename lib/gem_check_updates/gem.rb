@@ -31,7 +31,7 @@ module GemCheckUpdates
     def latest_version
       # Ignore pre release version (ex. beta, rc), and sort desc
       versions = @versions.reject(&:pre_release)
-                          .sort_by { |v| [v.major, v.minor, v.patch] }
+                          .sort
                           .reverse
 
       case @update_scope
